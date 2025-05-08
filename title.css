@@ -1,0 +1,97 @@
+/* Reset một chút để giao diện đẹp hơn */
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #e3f2fd, #fff);
+    padding: 20px;
+}
+
+header h1 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #1976d2;
+    margin-bottom: 30px;
+    animation: fadeInDown 1s ease-in-out;
+}
+
+/* Bảng sản phẩm */
+.table {
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    animation: fadeIn 1s ease-in;
+}
+
+.table th {
+    background-color: #1976d2;
+    color: white;
+    text-align: center;
+}
+
+.table td, .table th {
+    vertical-align: middle !important;
+    text-align: center;
+}
+
+/* Hình ảnh sản phẩm */
+.table img {
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+.table img:hover {
+    transform: scale(1.2);
+}
+
+/* Button */
+button.btn {
+    transition: all 0.3s ease;
+    padding: 10px 20px;
+    margin: 20px 20px;
+}
+button.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Form thêm sản phẩm */
+.add-product-container {
+    margin-top: 40px;
+    background-color: #f8f9fa;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 1s ease-in-out;
+}
+
+.add-product-container h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Input form */
+.add-product-container .form-control {
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: border-color 0.3s ease;
+}
+.add-product-container .form-control:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 5px rgba(25, 118, 210, 0.5);
+}
+
+/* Hiệu ứng xuất hiện */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

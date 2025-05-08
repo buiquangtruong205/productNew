@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý sản phẩm</title>
+    <link rel="stylesheet" href="title.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="icon" href="https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=500&h=270&fm=webp">
+</head>
+<body>
+    <header class="text-center my-4">
+        <h1>Quản lý sản phẩm</h1>
+    </header>
+    <main class="container">
+        <div class="product-container">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Mô tả</th>
+                        <th>Ảnh</th>
+                        <th>Số lượng</th>
+                        <th>Giá tiền</th>
+                        <th>Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody class="product-list"></tbody>
+            </table>
+
+            <div class="add-product-container mt-4">
+                <h2 id="form-title">Thêm sản phẩm</h2>
+                <form id="add-product-form">
+                    <div class="mb-3">
+                        <label for="product-title" class="form-label">Tên sản phẩm</label>
+                        <input type="text" id="product-title" required class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="product-description" class="form-label">Mô tả</label>
+                        <textarea id="product-description" required class="form-control"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="product-image" class="form-label">Ảnh</label>
+                        <input type="url" id="product-image" required class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="product-quan" class="form-label">Số lượng</label>
+                        <input type="number" id="product-quan" min="0" required class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="product-price" class="form-label">Giá tiền</label>
+                        <input type="number" id="product-price" min="1000" required class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-success">Thêm sản phẩm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+<script src="producijs.js"></script>
+</body>
+</html>
