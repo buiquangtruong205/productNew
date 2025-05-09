@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý sản phẩm</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="icon" href="https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=500&h=270&fm=webp">
+</head>
+<style>
+
+    /* Reset một chút để giao diện đẹp hơn */
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #e3f2fd, #fff);
+    padding: 20px;
+}
+
+header h1 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #1976d2;
+    margin-bottom: 30px;
+    animation: fadeInDown 1s ease-in-out;
+}
+
+/* Bảng sản phẩm */
+.table {
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    animation: fadeIn 1s ease-in;
+}
+
+.table th {
+    background-color: #1976d2;
+    color: white;
+    text-align: center;
+}
+
+.table td, .table th {
+    vertical-align: middle !important;
+    text-align: center;
+}
+
+/* Hình ảnh sản phẩm */
+.table img {
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+.table img:hover {
+    transform: scale(1.2);
+}
+
+/* Button */
+button.btn {
+    transition: all 0.3s ease;
+    padding: 10px 20px;
+    margin: 20px 20px;
+}
+button.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Form thêm sản phẩm */
+.add-product-container {
+    margin-top: 40px;
+    background-color: #f8f9fa;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 1s ease-in-out;
+}
+
+.add-product-container h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Input form */
+.add-product-container .form-control {
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: border-color 0.3s ease;
+}
+.add-product-container .form-control:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 5px rgba(25, 118, 210, 0.5);
+}
+
+/* Hiệu ứng xuất hiện */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+</style>
+<body>
+    <header class="text-center my-4">
+        <h1>Quản lý sản phẩm</h1>
+    </header>
+    <main class="container">
+        <div class="product-container">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Mô tả</th>
+                        <th>Ảnh</th>
+                        <th>Số lượng</th>
+                        <th>Giá tiền</th>
+                        <th>Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody class="product-list"></tbody>
+            </table>
+
+            <div class="add-product-container mt-4">
+                <h2 id="form-title">Thêm sản phẩm</h2>
+                <form id="add-product-form">
+                    <div class="mb-3">
+                        <label for="product-title" class="form-label">Tên sản phẩm</label>
+                        <input type="text" id="product-title" required class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="product-description" class="form-label">Mô tả</label>
+                        <textarea id="product-description" required class="form-control"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="product-image" class="form-label">Ảnh</label>
+                        <input type="url" id="product-image" required class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="product-quan" class="form-label">Số lượng</label>
+                        <input type="number" id="product-quan" min="0" required class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="product-price" class="form-label">Giá tiền</label>
+                        <input type="number" id="product-price" min="1000" required class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-success">Thêm sản phẩm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+<script>
+    const urlAPI = "https://6800a30bb72e9cfaf7281b89.mockapi.io/product";
+let currentEditId = null;
+
+function getProduct() {
+    fetch(urlAPI)
+        .then(res => res.json())
+        .then(data => {
+            const tableBody = document.querySelector(".product-list");
+            tableBody.innerHTML = ""; 
+
+            data.forEach((product, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${product.title}</td>
+                    <td>${product.description}</td>
+                    <td><img src="${product.image}" style="width: 50px; height: 50px;" /></td>
+                    <td>${product.quan}</td>
+                    <td>${product.price}</td>
+                    <td>
+                        <button class="btn btn-primary edit-id" data-id="${product.id}">Sửa</button>
+                        <button class="btn btn-danger delete-id" data-id="${product.id}">Xóa</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            setupButtons();
+        })
+        .catch(err => console.error("Fetch error:", err));
+}
+
+function setupButtons() {
+    document.querySelectorAll(".edit-id").forEach(button => {
+        button.onclick = () => editProduct(button.dataset.id);
+    });
+
+    document.querySelectorAll(".delete-id").forEach(button => {
+        button.onclick = () => deleteProduct(button.dataset.id);
+    });
+}
+
+function editProduct(id) {
+    fetch(`${urlAPI}/${id}`)
+        .then(res => res.json())
+        .then(product => {
+            document.querySelector("#product-title").value = product.title;
+            document.querySelector("#product-description").value = product.description;
+            document.querySelector("#product-image").value = product.image;
+            document.querySelector("#product-quan").value = product.quan;
+            document.querySelector("#product-price").value = product.price;
+
+            document.querySelector("#form-title").textContent = "Sửa sản phẩm";
+            document.querySelector("#add-product-form button").textContent = "Cập nhật sản phẩm";
+            currentEditId = id;
+        });
+}
+
+function deleteProduct(id) {
+    if (!confirm("Bạn có chắc muốn xóa sản phẩm này không?")) return;
+
+    fetch(`${urlAPI}/${id}`, {
+        method: "DELETE"
+    })
+    .then(() => {
+        alert("Xóa thành công!");
+        getProduct();
+    })
+    .catch(err => console.error("Delete error:", err));
+}
+
+const addProductForm = document.getElementById("add-product-form");
+addProductForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const product = {
+        title: document.getElementById("product-title").value.trim(),
+        description: document.getElementById("product-description").value.trim(),
+        image: document.getElementById("product-image").value.trim(),
+        quan: Number(document.getElementById("product-quan").value),
+        price: Number(document.getElementById("product-price").value),
+    };
+
+    const method = currentEditId ? "PUT" : "POST";
+    const apiUrl = currentEditId ? `${urlAPI}/${currentEditId}` : urlAPI;
+
+    fetch(apiUrl, {
+        method: method,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(product)
+    })
+    .then(res => res.json())
+    .then(() => {
+        getProduct();
+        addProductForm.reset();
+        document.querySelector("#form-title").textContent = "Thêm sản phẩm";
+        document.querySelector("#add-product-form button").textContent = "Thêm sản phẩm";
+        currentEditId = null;
+    })
+    .catch(err => console.error("Lỗi thêm/sửa:", err));
+});
+
+getProduct();
+</script>
+</body>
+</html>
